@@ -178,6 +178,8 @@ Enable ["loose" transformations](http://2ality.com/2015/12/babel6-loose-mode.htm
 
 Enable transformation of ES6 module syntax to another module type.
 
+The default `auto` will automatically select `false` if ES6 module syntax is already supported by the caller, or `"commonjs"` otherwise.
+
 Setting this to `false` will not transform modules.
 
 ### `debug`
