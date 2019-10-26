@@ -32,6 +32,8 @@ const DEFAULT_PRETTIER_CONFIG = {
   useTabs: false,
 };
 
+const isStagePreset = n => typeof n === "string" && /^stage-[0-3]$/.test(n);
+
 export default function compile(code: string, config: CompileConfig): Return {
   const { envConfig, presetsOptions } = config;
 
@@ -86,30 +88,39 @@ export default function compile(code: string, config: CompileConfig): Return {
     config.presets.push(["env", options]);
   }
 
+  const actualPresets = config.presets.filter(n => !isStagePreset(n));
+  const stages = config.presets
+    .filter(isStagePreset)
+    .map(name => Number(name.slice(-1)))
+    .sort();
+
+  if (stages.length) {
+    const stage = stages[0];
+    const options = {};
+    const useOption = name => (options[name] = presetsOptions[name]);
+
+    switch (stage) {
+      case 0:
+      case 1:
+        useOption("pipelineProposal");
+      case 2:
+        useOption("decoratorsLegacy");
+        if (!options.decoratorsLegacy) useOption("decoratorsBeforeExport");
+      case 3:
+    }
+
+    actualPresets.push([`stage-${stage}`, options]);
+  }
+
+  console.log("PRESETS", actualPresets);
+
   try {
     const babelConfig = {
       babelrc: false,
       filename: "repl",
       sourceMap: config.sourceMap,
 
-      presets: config.presets.map(preset => {
-        if (typeof preset === "string" && /^stage-[0-2]$/.test(preset)) {
-          const decoratorsLegacy = presetsOptions.decoratorsLegacy;
-          const decoratorsBeforeExport = decoratorsLegacy
-            ? undefined
-            : presetsOptions.decoratorsBeforeExport;
-
-          return [
-            preset,
-            {
-              decoratorsLegacy,
-              decoratorsBeforeExport,
-              pipelineProposal: presetsOptions.pipelineProposal,
-            },
-          ];
-        }
-        return preset;
-      }),
+      presets: actualPresets,
       plugins: config.plugins,
       sourceType: config.sourceType,
       wrapPluginVisitorMethod: config.getTransitions

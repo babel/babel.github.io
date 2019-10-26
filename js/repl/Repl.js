@@ -547,6 +547,13 @@ class Repl extends React.Component<Props, State> {
         return {
           runtimePolyfillState,
         };
+      } else if (/^stage-[0-3]$/.test(name)) {
+        const changedStage = Number(name.slice(-1));
+        const stage = value ? changedStage : changedStage + 1;
+        for (let i = 0; i <= 3; i++) {
+          presets[`stage-${i}`].isEnabled = stage <= i;
+        }
+        return { presets };
       } else if (state.hasOwnProperty(name)) {
         return {
           [name]: value,
