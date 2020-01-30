@@ -595,7 +595,7 @@ class Repl extends React.Component<Props, State> {
       showSidebar: state.isSidebarExpanded,
       targets: envConfigToTargetsString(envConfig),
       version: state.babel.version,
-      decoratorsLegacy: state.presetsOptions.decoratorsLegacy,
+      decoratorsVersion: state.presetsOptions.decoratorsVersion,
       decoratorsBeforeExport: state.presetsOptions.decoratorsBeforeExport,
       pipelineProposal: state.presetsOptions.pipelineProposal,
       externalPlugins: state.externalPlugins

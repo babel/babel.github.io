@@ -1,7 +1,7 @@
 // @flow
 
 import { css, cx } from "emotion";
-import React, { Component } from "react";
+import React, { Component, type Node as ReactChildren } from "react";
 import { envPresetDefaults, pluginConfigs } from "./PluginConfig";
 import AccordionTab from "./AccordionTab";
 import PresetLoadingAnimation from "./PresetLoadingAnimation";
@@ -128,6 +128,18 @@ const PresetOption = ({
   );
 };
 
+type SelectOptionProps = {
+  value: string,
+  actual: string,
+  children: ReactChildren,
+};
+
+const SelectOption = ({ value, actual, children }: SelectOptionProps) => (
+  <option value={value} selected={value === actual}>
+    {children}
+  </option>
+);
+
 export default function ReplOptions(props: Props) {
   return (
     <div className={`${styles.wrapper} ${props.className}`}>
@@ -220,6 +232,8 @@ class ExpandedContainer extends Component<Props, State> {
 
     const isStage1Enabled =
       presetState["stage-0"].isEnabled || presetState["stage-1"].isEnabled;
+
+    const { decoratorsVersion } = presetsOptions;
 
     return (
       <div className={styles.expandedContainer}>
@@ -318,49 +332,55 @@ class ExpandedContainer extends Component<Props, State> {
               </span>
               <PresetOption
                 when={isStage2Enabled}
-                option="decoratorsLegacy"
+                option="decoratorsVersion"
+                comment={
+                  "The date-based versions repreent the status of the proposal" +
+                  " at a given time. You should be always be using the latest" +
+                  " version, but be careful when upgrading since they can contain" +
+                  " breaking changes."
+                }
                 presets={["stage-0", "stage-1", "stage-2"]}
               >
                 <span className={styles.presetsOptionsLabel}>
-                  Decorators mode
+                  Decorators version
                 </span>
                 <select
                   className={cx(styles.optionSelect, styles.presetOptionSelect)}
                   onChange={this._onPresetOptionChange(
-                    "decoratorsLegacy",
-                    t => t.value === "legacy"
+                    "decoratorsVersion",
+                    t => t.value
                   )}
                 >
-                  <option
-                    vale="modern"
-                    selected={!presetsOptions.decoratorsLegacy}
-                  >
-                    Current Proposal
-                  </option>
-                  <option
-                    value="legacy"
-                    selected={presetsOptions.decoratorsLegacy}
-                  >
+                  <SelectOption value="jan-2019" actual={decoratorsVersion}>
+                    January 2019
+                  </SelectOption>
+                  <SelectOption value="nov-2018" actual={decoratorsVersion}>
+                    November 2018
+                  </SelectOption>
+                  <SelectOption value="legacy" actual={decoratorsVersion}>
                     Legacy
-                  </option>
+                  </SelectOption>
                 </select>
               </PresetOption>
               <PresetOption
                 when={isStage2Enabled}
                 option="decoratorsBeforeExport"
                 presets={["stage-0", "stage-1", "stage-2"]}
-                comment="Only works when legacy decorators are not enabled"
-                enabled={!presetsOptions.decoratorsLegacy}
+                comment={
+                  "Only works with November 2018 decorators." +
+                  " It defaults to 'true' with legacy decorators."
+                }
+                enabled={decoratorsVersion === "nov-2018"}
               >
                 <span className={styles.presetsOptionsLabel}>
                   Decorators before
                   <code>export</code>
                 </span>
                 <input
-                  enabled={!presetsOptions.decoratorsLegacy}
+                  enabled={decoratorsVersion === "nov-2018"}
                   checked={presetsOptions.decoratorsBeforeExport}
                   ref={el => {
-                    if (el) el.indeterminate = presetsOptions.decoratorsLegacy;
+                    if (el) el.indeterminate = decoratorsVersion !== "nov-2018";
                   }}
                   className={styles.envPresetCheckbox}
                   type="checkbox"
@@ -663,7 +683,6 @@ class ExpandedContainer extends Component<Props, State> {
   _onPresetOptionChange = (type: string, getValue: (target: *) => *) => (
     event: SyntheticInputEvent<*>
   ) => {
-    console.log("CHANGE", type, getValue(event.target));
     this.props.onPresetOptionChange(type, getValue(event.target));
   };
 

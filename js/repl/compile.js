@@ -110,14 +110,26 @@ export default function compile(code: string, config: CompileConfig): Return {
 
       presets: config.presets.map(preset => {
         if (typeof preset === "string" && /^stage-[0-2]$/.test(preset)) {
-          const decoratorsLegacy = presetsOptions.decoratorsLegacy;
-          const decoratorsBeforeExport = decoratorsLegacy
-            ? undefined
-            : presetsOptions.decoratorsBeforeExport;
+          let decoratorsLegacy, decoratorsVersion, decoratorsBeforeExport;
+
+          switch (presetsOptions.decoratorsVersion) {
+            // Use the decoratorsLegacy option for legacy and nov-2018 decorators
+            // for compatibility with older Babel versions.
+            case "legacy":
+              decoratorsLegacy = true;
+              break;
+            case "nov-2018":
+              decoratorsLegacy = false;
+              decoratorsBeforeExport = presetsOptions.decoratorsBeforeExport;
+              break;
+            default:
+              ({ decoratorsVersion } = presetsOptions);
+          }
 
           return [
             preset,
             {
+              decoratorsVersion,
               decoratorsLegacy,
               decoratorsBeforeExport,
               pipelineProposal: presetsOptions.pipelineProposal,
