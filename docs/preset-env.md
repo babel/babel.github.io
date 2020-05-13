@@ -239,40 +239,45 @@ This option is useful for "blacklisting" a transform like `@babel/plugin-transfo
 
 `"usage"` | `"entry"` | `false`, defaults to `false`.
 
-This option configures how `@babel/preset-env` handles polyfills.
+This option configures how `@babel/preset-env` imports polyfills and runtime support into your generated code.
 
-When either the `usage` or `entry` options are used, `@babel-preset-env` will add direct references to `core-js` modules as bare imports (or requires). This means `core-js` will be resolved relative to the file itself and needs to be accessible.
+Specifically, this option supports the following external packages:
 
-Since `@babel/polyfill` was deprecated in 7.4.0, we recommend directly adding `core-js` and setting the version via the [`corejs`](#corejs) option.
+- `core-js`: For standard JS built-ins
+- `regenerator-runtime`: For generator and `async`/`await` support (for browsers that lack support for generators)
+
+Since these packages do not come with Babel or `@babel/preset-env` itself, they'll need to be installed as production-level dependencies. This way, when the Babel-generated code imports them, they'll be accessible (in `node_modules`).
 
 ```sh
-npm install core-js@3 --save
-
-# or
-
-npm install core-js@2 --save
+npm install core-js regenerator-runtime --save
 ```
+
+> NOTE: Previously, these would be installed via `@babel/polyfill`, which is now deprecated. The above method of installing these polyfill packages is the recommended way.
 
 #### `useBuiltIns: 'entry'`
 
 > NOTE: Only use `import "core-js";` and `import "regenerator-runtime/runtime";` once in your whole app.
-> If you are using `@babel/polyfill`, it already includes both `core-js` and `regenerator-runtime`: importing it twice will throw an error.
+> If you are using `@babel/polyfill` (which is deprecated), it already includes both `core-js` and `regenerator-runtime`: importing it twice will throw an error.
 > Multiple imports or requires of those packages might cause global collisions and other issues that are hard to trace.
 > We recommend creating a single entry file that only contains the `import` statements.
 
-This option enables a new plugin that replaces the `import "core-js/stable";` and `import "regenerator-runtime/runtime"` statements (or `require("corejs")` and `require("regenerator-runtime/runtime")`) with individual requires to different `core-js` entry points based on environment.
+This option enables a new plugin that replaces the `import "core-js"` and `import "regenerator-runtime/runtime"` statements with only what's needed from each of them, depending on the target environments.
 
 **In**
 
 ```js
 import "core-js";
+import "regenerator-runtime/runtime";
 ```
 
 **Out (different based on environment)**
 
 ```js
+// If the target envs don't support these methods
 import "core-js/modules/es.string.pad-start";
 import "core-js/modules/es.string.pad-end";
+// If the target envs don't support generators
+import "regenerator-runtime/runtime`;
 ```
 
 Importing `"core-js"` loads polyfills for every possible ECMAScript feature: what if you know that you only need some of them? When using `core-js@3`, `@babel/preset-env` is able to optimize every single `core-js` entrypoint and their combinations. For example, you might want to only polyfill array methods and new `Math` proposals:
@@ -312,35 +317,43 @@ Adds specific imports for polyfills when they are used in each file. We take adv
 a.js
 
 ```js
-var a = new Promise();
+var a = new Map();
 ```
 
 b.js
 
 ```js
-var b = new Map();
+async function b() {}
 ```
 
 **Out (if environment doesn't support it)**
 
-```js
-import "core-js/modules/es.promise";
-var a = new Promise();
-```
+a.out.js
 
 ```js
 import "core-js/modules/es.map";
-var b = new Map();
+var a = new Map();
+```
+
+b.out.js
+
+```js
+import "regenerator-runtime/runtime";
+async function b() {}
 ```
 
 **Out (if environment supports it)**
 
-```js
-var a = new Promise();
-```
+a.out.js
 
 ```js
-var b = new Map();
+var a = new Map();
+```
+
+b.out.js
+
+```js
+async function b() {}
 ```
 
 #### `useBuiltIns: false`
