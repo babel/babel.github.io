@@ -209,7 +209,7 @@ An array of plugins to always include.
 
 Valid options include any:
 
-- [Babel plugins](https://github.com/babel/babel/blob/master/packages/babel-compat-data/scripts/data/plugin-features.js) - both with (`@babel/plugin-transform-spread`) and without prefix (`plugin-transform-spread`) are supported.
+- [Babel plugins](https://github.com/babel/babel/blob/master/packages/babel-compat-data/scripts/data/plugin-features.js) - without prefix: `transform-spread` and with prefixes [`@babel/`, `@babel/plugin-`, `babel-`, `babel-plugin-`]: [`@babel/transform-spread`, `@babel/plugin-transform-spread`, `babel-transform-spread`, `babel-plugin-transform-spread`] are supported.
 
 - Built-ins (both for [core-js@2](https://github.com/babel/babel/blob/master/packages/babel-preset-env/src/polyfills/corejs2/built-in-definitions.js) and [core-js@3](https://github.com/babel/babel/blob/master/packages/babel-preset-env/src/polyfills/corejs3/built-in-definitions.js), such as `es.map`, `es.set`, or `es.object.assign`.
 
@@ -444,4 +444,5 @@ The following are currently supported:
 ## Caveats
 
 ### Ineffective browserslist queries
+
 While `op_mini all` is a valid browserslist query, preset-env currently ignores it due to [lack of support data](https://github.com/kangax/compat-table/issues/1057) for Opera Mini.

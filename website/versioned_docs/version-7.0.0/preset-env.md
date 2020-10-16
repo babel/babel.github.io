@@ -209,7 +209,7 @@ An array of plugins to always include.
 
 Valid options include any:
 
-- [Babel plugins](https://github.com/babel/babel/blob/master/packages/babel-compat-data/scripts/data/plugin-features.js) - both with (`@babel/plugin-transform-spread`) and without prefix (`plugin-transform-spread`) are supported.
+- [Babel plugins](https://github.com/babel/babel-preset-env/blob/master/data/plugin-features.js) - without prefix: `transform-spread` and with prefix: `babel-plugin-`: `babel-plugin-transform-spread` and are supported.
 
 - [Built-ins](https://github.com/babel/babel/blob/master/packages/babel-compat-data/scripts/data/corejs2-built-in-features.js), such as `es6.map`, `es6.set`, or `es6.object.assign`.
 
@@ -237,7 +237,7 @@ An array of plugins to always exclude/remove.
 
 The possible options are the same as the `include` option.
 
-This option is useful for "blacklisting" a transform like `@babel/plugin-transform-regenerator` if you don't use generators and don't want to include `regeneratorRuntime` (when using `useBuiltIns`) or for using another plugin like [fast-async](https://github.com/MatAtBread/fast-async) instead of [Babel's async-to-gen](plugin-proposal-async-generator-functions.md).
+This option is useful for "blacklisting" a transform like `transform-regenerator` if you don't use generators and don't want to include `regeneratorRuntime` (when using `useBuiltIns`) or for using another plugin like [fast-async](https://github.com/MatAtBread/fast-async) instead of [Babel's async-to-gen](plugin-proposal-async-generator-functions.md).
 
 ### `useBuiltIns`
 
@@ -397,4 +397,5 @@ The following are currently supported:
 ## Caveats
 
 ### Ineffective browserslist queries
+
 While `op_mini all` is a valid browserslist query, preset-env currently ignores it due to [lack of support data](https://github.com/kangax/compat-table/issues/1057) for Opera Mini.

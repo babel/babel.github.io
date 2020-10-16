@@ -24,11 +24,14 @@ This example only includes the polyfills and code transforms needed for the last
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions", "safari >= 7"]
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "safari >= 7"]
+        }
       }
-    }]
+    ]
   ]
 }
 ```
@@ -38,11 +41,14 @@ Similarly, if you're targeting Node.js instead of the browser, you can configure
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "6.10"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "6.10"
+        }
       }
-    }]
+    ]
   ]
 }
 ```
@@ -52,11 +58,14 @@ For convenience, you can use `"node": "current"` to only include the necessary p
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "current"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
       }
-    }]
+    ]
   ]
 }
 ```
@@ -213,7 +222,7 @@ An array of plugins to always include.
 
 Valid options include any:
 
-- [Babel plugins](https://github.com/babel/babel-preset-env/blob/master/data/plugin-features.js) - both with (`babel-plugin-transform-es2015-spread`) and without prefix (`transform-es2015-spread`) are supported.
+- [Babel plugins](https://github.com/babel/babel-preset-env/blob/master/data/plugin-features.js) - without prefix: `transform-es2015-spread` and with prefix `babel-plugin-`: `babel-plugin-transform-es2015-spread` and are supported.
 
 - [Built-ins](https://github.com/babel/babel-preset-env/blob/master/data/built-in-features.js), such as `map`, `set`, or `object.assign`.
 
@@ -291,11 +300,14 @@ export class A {}
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "chrome": 52
+    [
+      "env",
+      {
+        "targets": {
+          "chrome": 52
+        }
       }
-    }]
+    ]
   ]
 }
 ```
@@ -314,13 +326,16 @@ exports.A = A;
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "chrome": 52
-      },
-      "modules": false,
-      "loose": true
-    }]
+    [
+      "env",
+      {
+        "targets": {
+          "chrome": 52
+        },
+        "modules": false,
+        "loose": true
+      }
+    ]
   ]
 }
 ```
@@ -338,12 +353,15 @@ export class A {}
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "chrome": 52,
-        "browsers": ["last 2 versions", "safari 7"]
+    [
+      "env",
+      {
+        "targets": {
+          "chrome": 52,
+          "browsers": ["last 2 versions", "safari 7"]
+        }
       }
-    }]
+    ]
   ]
 }
 ```
@@ -363,11 +381,14 @@ export var A = function A() {
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "current"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
       }
-    }]
+    ]
   ]
 }
 ```
@@ -386,14 +407,17 @@ exports.A = A;
 ```json
 {
   "presets": [
-    [ "env", {
-      "targets": {
-        "safari": 10
-      },
-      "modules": false,
-      "useBuiltIns": true,
-      "debug": true
-    }]
+    [
+      "env",
+      {
+        "targets": {
+          "safari": 10
+        },
+        "modules": false,
+        "useBuiltIns": true,
+        "debug": true
+      }
+    ]
   ]
 }
 ```
@@ -428,13 +452,16 @@ Using polyfills:
 ```json
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions", "safari >= 7"]
-      },
-      "include": ["transform-es2015-arrow-functions", "es6.map"],
-      "exclude": ["transform-regenerator", "es6.set"]
-    }]
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "safari >= 7"]
+        },
+        "include": ["transform-es2015-arrow-functions", "es6.map"],
+        "exclude": ["transform-regenerator", "es6.set"]
+      }
+    ]
   ]
 }
 ```
@@ -447,4 +474,3 @@ If you get a `SyntaxError: Unexpected token ...` error when using the [object-re
 
 - [babel-preset-modern-browsers](https://github.com/christophehurpeau/babel-preset-modern-browsers)
 - ?
-
