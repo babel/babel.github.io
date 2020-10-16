@@ -22,9 +22,10 @@ $ npm install --save-dev @babel/plugin-proposal-pipeline-operator
 
 The Pipeline Proposal is one of three competing implementations. Which implementation the plugin should use is configured with the `"proposal"` option. This option is required and should be one of:
 
-* `"minimal"` – [Minimal Pipeline](https://github.com/tc39/proposal-pipeline-operator/)
-* `"smart"` - [Smart Pipeline](https://github.com/js-choi/proposal-smart-pipelines)
-* `"fsharp"` - [F#-Style Pipeline](https://github.com/valtech-nyc/proposal-fsharp-pipelines)
+* `"hack"` - [Hack-Style Only](https://github.com/tc39/proposal-pipeline-operator/wiki#proposal-2-hack-style-only)
+* `"minimal"` – [Minimal - F#-Style](https://github.com/tc39/proposal-pipeline-operator/wiki#proposal0-original-minimal-proposal)
+* `"fsharp"` - [F#-Style with await](https://github.com/valtech-nyc/proposal-fsharp-pipelines) ([wiki](https://github.com/tc39/proposal-pipeline-operator/wiki#proposal-1-f-sharp-style-only-with-await))
+* `"smart"` - [Smart - Combination of Hack and F# Styles](https://github.com/js-choi/proposal-smart-pipelines) ([wiki](https://github.com/tc39/proposal-pipeline-operator/wiki#proposal-4-smart-mix))
 
 When one of the implementations is accepted, it will become the default and the `"proposal"` option will no longer be required.
 
