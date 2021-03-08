@@ -87,7 +87,7 @@ require("@babel/core").transformSync("code", {
 
 ### `corejs`
 
-`false`, `2`, `3` or `{ version: 2 | 3, proposals: boolean }`, defaults to `false`.
+`false`, `2`, `3` or `{ version: 2 | 3, proposals: boolean, definitions?: Object }`, defaults to `false`.
 
 e.g. `['@babel/plugin-transform-runtime', { corejs: 3 }],`
 
@@ -110,6 +110,36 @@ This option requires changing the dependency used to provide the necessary runti
 | `false`         | `npm install --save @babel/runtime`         |
 | `2`             | `npm install --save @babel/runtime-corejs2` |
 | `3`             | `npm install --save @babel/runtime-corejs3` |
+
+If needed, you can customize the `core-js` polyfill definitions that `@babel/plugin-transform-runtime` uses during transformations by specifying the `definitions` key to override [the defaults](https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/runtime-corejs3-definitions.js).
+
+For example, to disable polyfilling the `Symbol` built-in, all Array static methods and `String.prototype.repeat` instance method:
+
+```json
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": {
+          "version": 3,
+          "definitions": {
+            "BuiltIns": {
+              "Symbol": false
+            },
+            "StaticProperties": {
+              "Array": false
+            },
+            "InstanceProperties": {
+              "repeat": false
+            }
+          }
+        }
+      }
+    ]
+  ]
+}
+```
 
 ### `helpers`
 
