@@ -105,7 +105,9 @@ Or an object of minimum environment versions to support:
 }
 ```
 
-Example environments: `chrome`, `opera`, `edge`, `firefox`, `safari`, `ie`, `ios`, `android`, `node`, `electron`.
+Supported environments: `chrome`, `opera`, `edge`, `firefox`, `ie`, `safari`, `ios`, `android`, `node`, `electron`
+
+If browserslist query or browserslist config is used, only versions of environments above will be used.
 
 #### No targets
 
