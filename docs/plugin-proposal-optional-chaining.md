@@ -140,6 +140,16 @@ When `true`, this transform will pretend `document.all` does not exist,
 and perform loose equality checks with `null` instead of strict equality checks
 against both `null` and `undefined`.
 
+**babel.config.js**
+
+```js
+module.exports = {
+  plugins: [
+    [ '@babel/plugin-proposal-optional-chaining', { loose: true } ],
+  ]
+};
+```
+
 #### Example
 
 In
