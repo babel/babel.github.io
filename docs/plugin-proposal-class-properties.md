@@ -99,7 +99,7 @@ class Bork {
 }
 ```
 
-Without `{ "loose": true }`, the above code will compile to the following, using `Object.defineProperty`:
+Without `{ "loose": false }`, the above code will compile to the following, using `Object.defineProperty`:
 
 ```js
 var Bork = function Bork() {
