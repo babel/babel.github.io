@@ -132,9 +132,7 @@ We recognize this isn’t ideal and will be revisiting this in Babel v8.
 
 `boolean`.
 
-You may also target browsers supporting ES Modules (https://www.ecma-international.org/ecma-262/6.0/#sec-modules). When specifying this option, the browsers field will be ignored. You can use this approach in combination with `<script type="module"></script>` to conditionally serve smaller scripts to users (https://jakearchibald.com/2017/es-modules-in-browsers/#nomodule-for-backwards-compatibility).
-
-> _Please note_: when specifying the esmodules target, browsers targets will be ignored.
+You may also target browsers supporting ES Modules (https://www.ecma-international.org/ecma-262/6.0/#sec-modules). When the `esmodules` target is specified, the `browsers` target and `browserslist`'s targets will be ignored. It is _different_, however, from top level [`targets.esmodules`](https://babeljs.io/docs/en/options#targetsesmodules) option for backward compat reasons. You can use this approach in combination with `<script type="module"></script>` to conditionally serve smaller scripts to users (https://jakearchibald.com/2017/es-modules-in-browsers/#nomodule-for-backwards-compatibility).
 
 ```json
 {
