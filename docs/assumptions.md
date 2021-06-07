@@ -185,6 +185,21 @@ let name = user?.name;
 
 </div>
 
+## `noIncompleteNsImportDetection`
+
+Assume that no own property of a module export object is observed before initialization.
+For example, when trying to access `ns.foo`, it will return `undefined` both with this assumption turned on or off. The
+difference is that `Object.prototype.hasOwnProperty.call(ns, "foo")` would return `false` when 
+`noIncompleteNsImportDetection: true`.
+
+<div is="assumption-repl" data-assumption="noIncompleteNsImportDetection" data-plugins="plugin-transform-modules-commonjs">
+
+```text assumption-input
+export var foo;
+```
+
+</div>
+
 ## `noNewArrows`
 
 Assume that the code never tries to instantiate arrow functions using `new`, which is disallowed according to the specification.
