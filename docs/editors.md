@@ -47,3 +47,7 @@ more about it in the [Visual Studio Code docs](https://code.visualstudio.com/Doc
 
 WebStorm now ships with support for ES2015+ without requiring the installation of any additional
 extensions. You may, however, need to [enable it](https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/).
+
+### Emacs
+
+See [js2-mode](https://github.com/mooz/js2-mode/#react-and-jsx).
