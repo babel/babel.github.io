@@ -181,6 +181,12 @@ This allows users to run `transform-runtime` broadly across a whole project. By 
 
 Using absolute paths is not desirable if files are compiled for use at a later time, but in contexts where a file is compiled and then immediately consumed, they can be quite helpful.
 
+### `relativeRuntime`
+
+`boolean` or `string`, defaults to `false`.
+
+Similar to `absoluteRuntime`, but the generated path will be the relative difference between the resolved runtime and the location of the transpiled file. Using this option makes it portable across systems, although it also makes the setup slightly harder as you need to ensure that the relative location of the runtime compared to your sources is the same as the transpiled files.
+
 > You can read more about configuring plugin options [here](https://babeljs.io/docs/en/plugins#plugin-options)
 
 ### `version`
