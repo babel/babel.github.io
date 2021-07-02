@@ -7,6 +7,8 @@ A plugin that enables the re-use of Babel's injected helper code to save on code
 
 > NOTE: Instance methods such as `"foobar".includes("foo")` will only work with `core-js@3`. If you need to polyfill them, you can directly import `"core-js"` or use `@babel/preset-env`'s `useBuiltIns` option.
 
+> NOTE: You must choose between using `@babel/preset-env`'s `useBuiltIns` option with `usage` and this plugin. They do not work together.
+
 ## Installation
 
 Install it as development dependency.
