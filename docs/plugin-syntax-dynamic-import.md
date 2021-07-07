@@ -44,8 +44,12 @@ For example, with `core-js@3`:
 // webpack config
 const config = {
   entry: [
+    // using core-js@2
     "core-js/modules/es.promise",
     "core-js/modules/es.array.iterator",
+    // or using core-js@3
+    "core-js/stable/promise",
+    "core-js/stable/array/iterator",
     path.resolve(__dirname, "src/main.js"),
   ],
   // ...
@@ -55,9 +59,13 @@ const config = {
 or
 
 ```js
-// src/main.js
+// core-js@2 src/main.js 
 import "core-js/modules/es.promise";
 import "core-js/modules/es.array.iterator";
+
+// core-js@3 src/main.js
+import "core-js/stable/promise";
+import "core-js/table/array/iterator";
 
 // ...
 ```
