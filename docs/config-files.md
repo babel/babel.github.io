@@ -233,7 +233,7 @@ The main part is creating a custom jest transformer file that wraps `babel-jest`
 behavior in order to set the option, e.g.
 
 ```js
-module.exports = require("babel-jest").createTransformer({
+module.exports = require("babel-jest").default.createTransformer({
   rootMode: "upward",
 });
 ```
@@ -248,6 +248,8 @@ your Jest options via the [transform option](https://jestjs.io/docs/en/configura
 ```
 
 so all JS files will be processed with your version of `babel-jest` with the option enabled.
+
+> NOTE: When using `babel-jest` &lt; 27, you must omit the `.default` part: `require("babel-jest").createTransformer({ ...`.
 
 #### Others
 
