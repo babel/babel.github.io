@@ -447,11 +447,8 @@ environment(s). Enable this option if you want to force running _all_
 transforms, which is useful if the output will be run through UglifyJS or an
 environment that only supports ES5.
 
-> NOTE: Uglify has a work-in-progress "Harmony" branch to address the lack of
-> ES6 support, but it is not yet stable. You can follow its progress in
-> [UglifyJS2 issue #448](https://github.com/mishoo/UglifyJS2/issues/448). If you
-> require an alternative minifier which _does_ support ES6 syntax, we recommend
-> using [babel-minify](preset-minify.md).
+> NOTE: If you require an alternative minifier which _does_ support ES6 syntax, 
+> we recommend [babel-minify](preset-minify.md) or [Terser](https://www.npmjs.com/package/terser).
 
 ### `configPath`
 
