@@ -159,7 +159,15 @@ export const persistedStateToEnvConfig = (
     builtIns: persistedState.builtIns ?? envPresetDefaults.builtIns.default,
     corejs: persistedState.corejs ?? envPresetDefaults.corejs.default,
   };
-
+  let parsedAssumptions = {};
+  try {
+    parsedAssumptions = persistedState.assumptions
+      ? JSON.parse(decodeURIComponent(persistedState.assumptions))
+      : {};
+  } catch (err) {
+    console.error("Error parsing assumptions", err);
+  }
+  envConfig.assumptions = parsedAssumptions;
   decodeURIComponent(persistedState.targets)
     .split(",")
     .forEach(component => {

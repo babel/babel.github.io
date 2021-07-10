@@ -30,6 +30,7 @@ export type EnvConfig = {
   shippedProposals: boolean,
   version?: any,
   node: ?string,
+  assumptions: Object,
 };
 
 export type EnvFeatures = {
@@ -136,9 +137,15 @@ export type ReplState = {
   pipelineProposal: "minimal" | "smart" | "fsharp",
   reactRuntime: "classic" | "automatic",
   externalPlugins: ?string,
+  assumptions: ?Object,
 };
 
-export type SidebarTabSection = "env" | "plugins" | "presets" | "settings";
+export type SidebarTabSection =
+  | "env"
+  | "plugins"
+  | "presets"
+  | "settings"
+  | "assumptions";
 
 export type Transition = {
   code: string,

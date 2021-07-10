@@ -34,6 +34,28 @@ const PRESET_ORDER = [
   "stage-0",
 ];
 
+const ASSUMPTIONS_OPTIONS = [
+  "arrayLikeIsIterable",
+  "constantReexports",
+  "constantSuper",
+  "enumerableModuleMeta",
+  "ignoreFunctionLength",
+  "ignoreToPrimitiveHint",
+  "iterableIsArray",
+  "mutableTemplateObject",
+  "noClassCalls",
+  "noDocumentAll",
+  "noNewArrows",
+  "objectRestNoSymbols",
+  "privateFieldsAsProperties",
+  "pureGetters",
+  "setClassMethods",
+  "setComputedProperties",
+  "setPublicClassFields",
+  "setSpreadProperties",
+  "skipForOfIteratorClosing",
+  "superIsCallableConstructor",
+];
 // These presets are deprecated. We only show them if they are enabled, so that
 // when they are enabled because of an old URL or local storage they can still
 // be disabled.
@@ -48,6 +70,7 @@ type ToggleVersion = (version: string) => void;
 type ShowOfficialExternalPluginsChanged = (value: string) => void;
 type PluginSearch = (value: string) => void;
 type PluginChange = (plugin: Object) => void;
+type AssumptionsChange = (value: string, isChecked: boolean) => void;
 
 type Props = {
   babelVersion: ?string,
@@ -79,6 +102,7 @@ type Props = {
   runtimePolyfillConfig: PluginConfig,
   runtimePolyfillState: PluginState,
   loadingExternalPlugins: boolean,
+  onAssumptionsChange: AssumptionsChange,
 };
 
 type LinkProps = {
@@ -92,6 +116,16 @@ const LinkToDocs = ({ className, children, section }: LinkProps) => (
     className={className}
     target="_blank"
     href={`/docs/en/next/babel-preset-env.html#${section}`}
+  >
+    {children}
+  </a>
+);
+
+const LinkToAssumptionDocs = ({ className, children, section }: LinkProps) => (
+  <a
+    className={className}
+    target="_blank"
+    href={`/docs/en/next/assumptions#${section.toLowerCase()}`}
   >
     {children}
   </a>
@@ -150,6 +184,7 @@ type State = {
   isPluginsTabExpanded: boolean,
   isPresetsTabExpanded: boolean,
   isSettingsTabExpanded: boolean,
+  isAssumptionsTabExpanded: boolean,
 };
 
 // The choice of Component over PureComponent is intentional here.
@@ -170,7 +205,20 @@ class ExpandedContainer extends Component<Props, State> {
         p => props.presetState[p].isEnabled
       ),
       isSettingsTabExpanded: true, // TODO
+      isAssumptionsTabExpanded: false,
     };
+  }
+
+  componentDidMount() {
+    const { envConfig } = this.props;
+    const { assumptions = {} } = envConfig;
+    /**
+     * Keeps the assumptions tab expanded if there are any assumptions options
+     * selected in the shared URL
+     */
+    if (Object.keys(assumptions).length > 0) {
+      this.setState({ isAssumptionsTabExpanded: true });
+    }
   }
 
   handleToggleTabExpanded = (tab: SidebarTabSection) => {
@@ -210,8 +258,10 @@ class ExpandedContainer extends Component<Props, State> {
       isPluginsTabExpanded,
       isPresetsTabExpanded,
       isSettingsTabExpanded,
+      isAssumptionsTabExpanded,
     } = this.state;
 
+    const { assumptions } = envConfig;
     const isReactEnabled = presetState["react"].isEnabled;
 
     const isStage2Enabled =
@@ -670,7 +720,40 @@ class ExpandedContainer extends Component<Props, State> {
                 />
               </label>
             </AccordionTab>
-
+            <AccordionTab
+              className={styles.section}
+              isExpanded={isAssumptionsTabExpanded}
+              label="Assumptions"
+              onToggleExpanded={this.handleToggleTabExpanded}
+              tabKey="assumptions"
+            >
+              {ASSUMPTIONS_OPTIONS.map(option => {
+                const isChecked =
+                  assumptions[option] === "undefined"
+                    ? false
+                    : assumptions[option];
+                return (
+                  <label className={styles.envPresetRow}>
+                    <LinkToAssumptionDocs
+                      className={`${styles.envPresetLabel} ${
+                        styles.highlightWithoutUppercase
+                      }`}
+                      section={option}
+                    >
+                      {option}
+                    </LinkToAssumptionDocs>
+                    <input
+                      checked={isChecked}
+                      className={styles.envPresetCheckbox}
+                      onChange={event =>
+                        this._onAssumptionsCheck(option, event.target.checked)
+                      }
+                      type="checkbox"
+                    />
+                  </label>
+                );
+              })}
+            </AccordionTab>
             <ExternalPlugins
               _pluginNameChanged={this._pluginNameChanged}
               _onshowOfficialExternalPluginsChanged={
@@ -751,6 +834,10 @@ class ExpandedContainer extends Component<Props, State> {
 
   _onshowOfficialExternalPluginsChanged = value => {
     this.props.showOfficialExternalPluginsChanged(value);
+  };
+
+  _onAssumptionsCheck = (value, isChecked) => {
+    this.props.onAssumptionsChange(value, isChecked);
   };
 
   _pluginChanged = (e, plugin) => {
@@ -992,6 +1079,11 @@ const styles = {
   }),
   highlight: css({
     textTransform: "uppercase",
+    fontSize: "0.75rem",
+    fontWeight: "bold",
+    color: colors.inverseForeground,
+  }),
+  highlightWithoutUppercase: css({
     fontSize: "0.75rem",
     fontWeight: "bold",
     color: colors.inverseForeground,

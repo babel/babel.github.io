@@ -26,6 +26,7 @@ const URL_KEYS = [
   "targets",
   "version",
   "externalPlugins",
+  "assumptions",
 ];
 
 const compress = (string: string) =>

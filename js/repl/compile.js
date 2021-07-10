@@ -121,6 +121,7 @@ export default function compile(code: string, config: CompileConfig): Return {
       babelrc: false,
       filename: "repl" + guessFileExtension(config.presets),
       sourceMap: config.sourceMap,
+      assumptions: envConfig?.assumptions ?? {},
 
       presets: config.presets.map(preset => {
         if (typeof preset !== "string") return preset;
