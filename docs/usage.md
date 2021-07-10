@@ -184,7 +184,7 @@ The [@babel/polyfill](polyfill.md) module includes [core-js](https://github.com/
 
 This means you can use new built-ins like `Promise` or `WeakMap`, static methods like `Array.from` or `Object.assign`, instance methods like `Array.prototype.includes`, and generator functions (when used alongside the regenerator plugin). The polyfill adds to the global scope as well as native prototypes like `String` in order to do this.
 
-For library/tool authors this may be too much. If you don't need the instance methods like `Array.prototype.includes` you can do without polluting the global scope altogether by using the [transform runtime](plugin-transform-runtime.md) plugin instead of `@babel/polyfill`.
+For library/tool authors this may be too much. If you don't want to pollute the global scope you can do without polluting the global scope altogether by using the [transform runtime](plugin-transform-runtime.md) plugin instead of `@babel/polyfill`.
 
 To go one step further, if you know exactly what features you need polyfills for, you can require them directly from [core-js](https://github.com/zloirock/core-js#commonjs).
 
