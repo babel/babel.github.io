@@ -266,18 +266,85 @@ This option is useful for "blacklisting" a transform like `@babel/plugin-transfo
 
 `"usage"` | `"entry"` | `false`, defaults to `false`.
 
-This option configures how `@babel/preset-env` handles polyfills.
+This option configures how `@babel/preset-env` handles polyfills and whether optimizations are applied to only include polyfills that are needed.
 
-When either the `usage` or `entry` options are used, `@babel/preset-env` will add direct references to `core-js` modules as bare imports (or requires). This means `core-js` will be resolved relative to the file itself and needs to be accessible.
-
-Since `@babel/polyfill` was deprecated in 7.4.0, we recommend directly adding `core-js` and setting the version via the [`corejs`](#corejs) option.
+When specifying polyfilling behavior, you will want to include `core-js` and probably `regenerator-runtime` dependencies:
 
 ```sh
-npm install core-js@3 --save
+npm install --save core-js regenerator-runtime
+```
 
-# or
+You'll also need to set the core-js version via the [`corejs`](#corejs) option:
 
-npm install core-js@2 --save
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "corejs": 3
+      }
+    ]
+  ]
+}
+```
+
+Generally, `"usage"` meets the needs of most users by only including the polyfills that are needed.
+
+#### `useBuiltIns: 'usage'`
+
+Adds specific imports for polyfills when they are used in each file. We take advantage of the fact that a bundler will load the same polyfill only once.
+
+You do not need to provide "entry level" import statements, as with the `"entry"` option.
+
+```js
+// nope
+import 'core-js';
+import 'regenerator-runtime/runtime';
+```
+
+**In**
+
+a.js
+
+```js
+var a = new Promise();
+```
+
+b.js
+
+```js
+var b = new Map();
+```
+
+**Out (if environment doesn't support it)**
+
+a.js
+
+```js
+import "core-js/modules/es.promise";
+var a = new Promise();
+```
+
+b.js
+
+```js
+import "core-js/modules/es.map";
+var b = new Map();
+```
+
+**Out (if environment supports it)**
+
+a.js
+
+```js
+var a = new Promise();
+```
+
+b.js
+
+```js
+var b = new Map();
 ```
 
 #### `useBuiltIns: 'entry'`
@@ -337,54 +404,6 @@ You can read [core-js](https://github.com/zloirock/core-js)'s documentation for 
 
 > NOTE: When using `core-js@2` (either explicitly using the [`corejs: "2"`](#corejs) option or implicitly), `@babel/preset-env` will also transform imports and requires of `@babel/polyfill`.
 > This behavior is deprecated because it isn't possible to use `@babel/polyfill` with different `core-js` versions.
-
-#### `useBuiltIns: 'usage'`
-
-Adds specific imports for polyfills when they are used in each file. We take advantage of the fact that a bundler will load the same polyfill only once.
-
-**In**
-
-a.js
-
-```js
-var a = new Promise();
-```
-
-b.js
-
-```js
-var b = new Map();
-```
-
-**Out (if environment doesn't support it)**
-
-a.js
-
-```js
-import "core-js/modules/es.promise";
-var a = new Promise();
-```
-
-b.js
-
-```js
-import "core-js/modules/es.map";
-var b = new Map();
-```
-
-**Out (if environment supports it)**
-
-a.js
-
-```js
-var a = new Promise();
-```
-
-b.js
-
-```js
-var b = new Map();
-```
 
 #### `useBuiltIns: false`
 
