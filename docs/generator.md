@@ -48,6 +48,7 @@ Options for formatting output:
 | retainFunctionParens   | boolean             | `false`         | Retain parens around function expressions (could be used to change engine parsing behavior)                                                                                                                                                                        |
 | retainLines            | boolean             | `false`         | Attempt to use the same line numbers in the output code as in the source code (helps preserve stack traces)                                                                                                                                                        |
 | shouldPrintComment     | function            | `opts.comments` | Function that takes a comment (as a string) and returns `true` if the comment should be included in the output. By default, comments are included if `opts.comments` is `true` or if `opts.minified` is `false` and the comment contains `@preserve` or `@license` |
+| topicToken             | `'%'` or `'#'`      |                 | The token to use with [Hack-pipe topic references](/docs/en/babel-plugin-proposal-pipeline-operator). This is required when there are any `TopicReference` nodes.
 
 Options for source maps:
 
