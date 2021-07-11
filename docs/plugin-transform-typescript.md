@@ -122,6 +122,48 @@ class A {
 }
 ```
 
+### `optimizeConstEnums`
+
+`boolean`, defaults to `false`
+
+Added in: `v7.15.0`
+
+When set to `true`, Babel will inline enum values rather than using the usual `enum` output:
+```typescript
+// Input
+const enum Animals {
+  Fish
+}
+console.log(Animals.Fish);
+
+// Default output
+var Animals;
+
+(function (Animals) {
+  Animals[Animals["Fish"] = 0] = "Fish";
+})(Animals || (Animals = {}));
+
+console.log(Animals.Fish);
+
+// `optimizeConstEnums` output
+console.log(0);
+```
+
+This option differs from TypeScript's `--isolatedModules` behavior, which ignores the `const` modifiers compiling them as normal enums, and aligns Babel's behavior with the TypeScript default behavior.
+
+However, when _exporting_ a `const enum` Babel will compile it to a plain object literal so that it doesn't need to rely on cross-file analysis when compiling it:
+```typescript
+// Input
+export const enum Animals {
+  Fish,
+}
+
+// `optimizeConstEnums` output
+export var Animals = {
+  Fish: 0,
+};
+```
+
 ## TypeScript Compiler Options
 
 The official TypeScript compiler has many [options][tsc-options] for configuring how it
