@@ -7,7 +7,7 @@ This preset is recommended if you use [TypeScript](https://www.typescriptlang.or
 
 - [@babel/plugin-transform-typescript](plugin-transform-typescript.md)
 
-> You will need to specify `--extensions ".ts"` for `@babel/cli` & `@babel/node` cli's to handle `.ts` files.
+> You will need to specify `--extensions .ts` for `@babel/cli` & `@babel/node` cli's to handle `.ts` files.
 
 ## Example
 
