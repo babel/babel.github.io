@@ -33,6 +33,7 @@ mind. When in doubt, use `.parse()`.
   <summary>History</summary>
 | Version | Changes |
 | --- | --- |
+| `v7.15.0` | Added `attachComment` |
 | `v7.7.0` | Added `errorRecovery` |
 | `v7.5.0` | Added `allowUndeclaredExports` |
 | `v7.2.0` | Added `createParenthesizedExpressions` |
@@ -63,6 +64,8 @@ mind. When in doubt, use `.parse()`.
   might insert the appropriate declarations, so it is sometimes important
   to set this option to `true` to prevent the parser from prematurely
   complaining about undeclared exports that will be added later.
+
+- **attachComment**: By default, Babel attaches comments to adjacent AST nodes. When this option is set to `false`, comments are not attached. It can provide up to 30% performance improvement when the input code has _many_ comments. `@babel/eslint-parser` will set it for you. It is not recommended to use `attachComment: false` with Babel transform, as doing so removes all the comments in output code, and renders annotations such as `/* istanbul ignore next */` nonfunctional.
 
 - **createParenthesizedExpressions**: By default, the parser sets `extra.parenthesized` on the expression nodes. When this option is set to `true`, `ParenthesizedExpression` AST nodes are created instead.
 
@@ -278,6 +281,7 @@ You should enable these features only if you are using an older version.
     See [Ergonomics of `#{}`/`#[]`](https://github.com/tc39/proposal-record-tuple/issues/10) for more information.
 
 - `flow`:
+
   - `all` (`boolean`, default: `false`)
     Some code has different meaning in Flow and in vanilla JavaScript. For example, `foo<T>(x)` is parsed as a call expression with a type argument in Flow, but as a comparison (`foo < T > x`) accordingly to the ECMAScript specification. By default, `babel-parser` parses those ambiguous constructs as Flow types only if the file starts with a `// @flow` pragma.
     Set this option to `true` to always parse files as if `// @flow` was specified.
